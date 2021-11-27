@@ -124,15 +124,47 @@ def build_cz(N: int):
     raise NotImplementedError("It's appears that we don't need it")
 
 
-def diffuser(circ: QuantumCircuit, N: int):
+def build_diffuser(N: int):
     """
     Build the diffuser operator of size N
-    """
-    circ.h(range(N))
-    circ.n(range(N))
     
-    circ.n(range(N))
-    circ.h(range(N))
+    Examples
+    --------
+    >>> diffuser = build_diffuser(4)
+    >>> diffuser.draw("text")
+         ┌───┐┌───┐ ░                                     ░ ┌───┐┌───┐
+    q_0: ┤ H ├┤ X ├─░───■─────────────────────────────■───░─┤ X ├┤ H ├
+         ├───┤├───┤ ░   │                             │   ░ ├───┤├───┤
+    q_1: ┤ H ├┤ X ├─░───■─────────────────────────────■───░─┤ X ├┤ H ├
+         ├───┤├───┤ ░   │                             │   ░ ├───┤├───┤
+    q_2: ┤ H ├┤ X ├─░───┼────■───────────────────■────┼───░─┤ X ├┤ H ├
+         ├───┤├───┤ ░   │    │                   │    │   ░ ├───┤├───┤
+    q_3: ┤ H ├┤ X ├─░───┼────┼────■─────────■────┼────┼───░─┤ X ├┤ H ├
+         └───┘└───┘ ░ ┌─┴─┐  │    │         │    │  ┌─┴─┐ ░ └───┘└───┘
+    q_4: ─────────────┤ X ├──■────┼─────────┼────■──┤ X ├─────────────
+                      └───┘┌─┴─┐  │         │  ┌─┴─┐└───┘             
+    q_5: ──────────────────┤ X ├──■─────────■──┤ X ├──────────────────
+                           └───┘┌─┴─┐     ┌─┴─┐└───┘                  
+    q_6: ───────────────────────┤ X ├──■──┤ X ├───────────────────────
+                                └───┘┌─┴─┐└───┘                       
+    q_7: ────────────────────────────┤ X ├────────────────────────────
+                                     └───┘                            
+    """
+    barrier = QuantumCircuit(N)
+    barrier.barrier()
+    hadamard = QuantumCircuit(N)
+    hadamard.h(range(N))
+    nnot = QuantumCircuit(N)
+    nnot.x(range(N))
+    cnot = build_cnot(N)
+    
+    circ = cnot.compose(barrier, range(N), front=True)
+    circ = circ.compose(nnot, range(N), front=True)
+    circ = circ.compose(hadamard, range(N), front=True)
+    circ = circ.compose(barrier, range(N), front=False)
+    circ = circ.compose(nnot, range(N), front=False)
+    circ = circ.compose(hadamard, range(N), front=False)
+    return circ
     
 
 def simulate(circ):

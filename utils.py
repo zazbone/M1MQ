@@ -141,5 +141,5 @@ def simulate(circ):
     """
     aer_sim = QasmSimulator()
     qasm_circ = transpile(circ, aer_sim)
-    result = aer_sim.run(qasm_circ, shots=512).result()
+    result = aer_sim.run(qasm_circ, shots=1024).result()
     return result.get_counts(qasm_circ)

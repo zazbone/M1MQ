@@ -72,6 +72,7 @@ def num_oracle(w: int, bitsize: int=-1):
     """
     Create an oracle circuit for the given w bit sequence to gess
     Represent the case where the targeted value is a number (represented here by a bit sequence)
+    used in groover algorithm
     """
     bitstr = f"{w:b}"
     if 0 < bitsize:
@@ -120,6 +121,7 @@ def build_cz(N: int):
     >>> build_cz(circ, 5)
     >>> circ.draw("text")
     """
+    raise NotImplementedError("It's appears that we don't need it")
 
 
 def diffuser(circ: QuantumCircuit, N: int):

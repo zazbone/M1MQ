@@ -59,13 +59,15 @@ def build_cnot(N: int):
     return circ
     
     
-def flip_zeros(circ: QuantumCircuit, bits: Sequence[int]):
+def flip_zeros(circ: QuantumCircuit, bits: Sequence[int], invert=False):
     """
     Apply not unitary gate on circ's layer that match index of bits where bit is equal to zero
     """
     for i, bit in enumerate(bits):
         print(type(bit), bit)
-        if bit == 0:
+        if bit == 0 and not invert:
+            circ.x(i)
+        elif bit == 1 and invert:
             circ.x(i)
             
             

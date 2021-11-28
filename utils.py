@@ -64,6 +64,7 @@ def flip_zeros(circ: QuantumCircuit, bits: Sequence[int]):
     Apply not unitary gate on circ's layer that match index of bits where bit is equal to zero
     """
     for i, bit in enumerate(bits):
+        print(type(bit), bit)
         if bit == 0:
             circ.x(i)
             
@@ -74,13 +75,8 @@ def num_oracle(w: int, bitsize: int=-1):
     Represent the case where the targeted value is a number (represented here by a bit sequence)
     used in groover algorithm
     """
-    bitstr = f"{w:b}"
-    if 0 < bitsize:
-        assert len(bitstr) > bitsize, ValueError(f"{bitsize} bits is not enouth to represent w={w} value")
-        bitstr = "0" * (len(bitstr) - bitsize) + bitstr
-    N = len(bitstr)
-    bits = map(int, bitstr)
-    
+    bits = bit_array(w, bitsize)
+    N = len(bits)
     
     wflip = QuantumCircuit(N)
     flip_zeros(wflip, bits)
@@ -91,8 +87,8 @@ def num_oracle(w: int, bitsize: int=-1):
     # Compose all the final circuit part (bitflip | cnot | bitflip)
     oracle = cnot.compose(barrier, range(N), front=True)
     oracle = oracle.compose(wflip, range(N), front=True)
-    oracle = oracle.compose(wflip, range(N), front=False)
     oracle = oracle.compose(barrier, range(N), front=False)
+    oracle = oracle.compose(wflip, range(N), front=False)
     return oracle
 
 
@@ -175,3 +171,12 @@ def simulate(circ):
     qasm_circ = transpile(circ, aer_sim)
     result = aer_sim.run(qasm_circ, shots=1024).result()
     return result.get_counts(qasm_circ)
+
+def bit_array(num: int, size: int=-1):
+    """"""
+    bitstr = f"{num:b}"
+    if 0 < size:
+        assert len(bitstr) > size, ValueError(f"{size} bits is not enouth to represent {num} value")
+        bitstr = "0" * (len(bitstr) - size) + bitstr
+    return list(map(int, bitstr))
+    

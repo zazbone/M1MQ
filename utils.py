@@ -64,7 +64,6 @@ def flip_zeros(circ: QuantumCircuit, bits: Sequence[int], invert=False):
     Apply not unitary gate on circ's layer that match index of bits where bit is equal to zero
     """
     for i, bit in enumerate(bits):
-        print(type(bit), bit)
         if bit == 0 and not invert:
             circ.x(i)
         elif bit == 1 and invert:
@@ -75,7 +74,7 @@ def num_oracle(w: int, bitsize: int=-1):
     """
     Create an oracle circuit for the given w bit sequence to gess
     Represent the case where the targeted value is a number (represented here by a bit sequence)
-    used in groover algorithm
+    used in Grover algorithm
     """
     bits = bit_array(w, bitsize)
     N = len(bits)

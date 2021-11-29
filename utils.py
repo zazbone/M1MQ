@@ -3,6 +3,7 @@ from qiskit.visualization import plot_histogram
 from qiskit.quantum_info import Statevector
 from qiskit.providers.aer import QasmSimulator
 from typing import Sequence
+import matplotlib as mpl
 
 
 def build_cnot(N: int):
@@ -180,4 +181,9 @@ def bit_array(num: int, size: int=-1):
         assert len(bitstr) > size, ValueError(f"{size} bits is not enouth to represent {num} value")
         bitstr = "0" * (len(bitstr) - size) + bitstr
     return list(map(int, bitstr))
+
+
+def to_pgf(circ: QuantumCircuit, file_path="circ.tex"):
+    mpl.use('pgf')
+    circ.draw("mpl").savefig(file_path, format="pgf")
     

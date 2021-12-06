@@ -20,11 +20,11 @@ Important functions are "build_diffuser", "num_oracle" and "build_cnot"
 ### Examples
 
 The examples are:
-    - simple2bits: a simple exemple from Qiskit tutorials
-    - Diffiser: show the creation and a test of a basic Grover diffuser
-    - Oracle: show the creation and a test of a Number gessing Oracle
-    - Nsize_Cnot: A generic Cnot gate of Nbits
-    - Qgessing_number: The construction of a Nbits oracle tha gess a given w number
+- simple2bits: a simple exemple from Qiskit tutorials
+- Diffiser: show the creation and a test of a basic Grover diffuser
+- Oracle: show the creation and a test of a Number gessing Oracle
+- Nsize_Cnot: A generic Cnot gate of Nbits
+- Qgessing_number: The construction of a Nbits oracle tha gess a given w number
   
 ### Setup
 
